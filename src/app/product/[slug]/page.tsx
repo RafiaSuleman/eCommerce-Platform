@@ -32,8 +32,8 @@ export default async function ProductPge({
   const data: fullProduct = await getData(params.slug);
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-screen-xl px-4 md:px-8">
+    <div className="bg-white ">
+      <div className="mx-auto max-w-screen-xl px-4 md:px-8 py-7">
         <div className="grid gap-8 md:grid-cols-2">
           <ImageGallery images={data.images} />
 
@@ -78,7 +78,7 @@ export default async function ProductPge({
               <span className="text-sm">2-4 Day Shipping</span>
             </div>
 
-            <div className="flex gap-2.5">
+            <div className="mt-6 grid grid-cols-2 gap-4">
               <AddToBag
                 currency="USD"
                 description={data.description}
@@ -87,12 +87,18 @@ export default async function ProductPge({
                 price={data.price}
                 key={data._id}
               />
-              <Button variant="secondary">CheckOut now</Button>
+              <Button variant="secondary">Buy Now</Button>
             </div>
 
-            <p className="mt-12 text-base text-gray-500 tracking-wide">
-              {data.description}
-            </p>
+            <div className="mt-8 rounded-2xl border border-gray-200 bg-gray-50 p-6">
+              <h3 className="mb-3 text-lg font-semibold">
+                Product Description
+              </h3>
+
+              <p className="leading-8 text-gray-600">
+                {data.description}
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import Newest from "@/components/ui/newest";
 
 export default function Home() {
   return (
-    <div className="bg-white pb-6 sm:pb-8">
+    <div className="bg-white ">
       <Hero />
       <Newest />
 
