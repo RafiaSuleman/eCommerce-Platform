@@ -18,6 +18,7 @@ export default function SearchModal() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Product[]>([]);
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   useEffect(() => {
@@ -34,7 +35,35 @@ export default function SearchModal() {
         console.error("Error fetching search suggestions:", error);
       });
   }, [debouncedQuery]);
+  useEffect(() => {
+    if (debouncedQuery.trim() === "") {
+      setSuggestions([]);
+      setLoading(false);
+      return;
+    }
 
+    const fetchSuggestions = async () => {
+      try {
+        setLoading(true);
+
+        const response = await fetch(
+          `/api/search?query=${encodeURIComponent(debouncedQuery)}`,
+        );
+
+        const data = await response.json();
+
+        setSuggestions(data);
+      } catch (error) {
+        console.error("Error fetching search suggestions:", error);
+
+        setSuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSuggestions();
+  }, [debouncedQuery]);
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(query);
@@ -87,17 +116,40 @@ export default function SearchModal() {
               placeholder="Search products..."
               className="mt-5 w-full rounded-xl border p-3 outline-none focus:border-blue-500"
             />
+            {query.trim() === "" && (
+              <p className="mt-6 text-gray-500">Start typing to search...</p>
+            )}
 
-            <div className="mt-6 text-gray-500">Start typing to search...</div>
+            {loading && (
+              <p className="mt-6 text-center font-medium text-blue-600">
+                Searching...
+              </p>
+            )}
+
+            {!loading &&
+              query.trim() !== "" &&
+              debouncedQuery.trim() !== "" &&
+              suggestions.length === 0 && (
+                <p className="mt-6 text-center text-gray-500">
+                  No products found.
+                </p>
+              )}
+           
             {suggestions.length > 0 && (
-              <div className="mt-2 rounded-lg border bg-white shadow-lg">
+              <div className="mt-2 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
                 {suggestions.map((suggestion) => (
-                  <div
+                  <button
                     key={suggestion._id}
-                    className="cursor-pointer px-4 py-3 hover:bg-gray-100"
+                    onClick={() => {
+                      router.push(`/product/${suggestion.slug}`);
+                      setOpen(false);
+                      setQuery("");
+                      setSuggestions([]);
+                    }}
+                    className="block w-full border-b border-gray-100 px-4 py-3 text-left transition last:border-b-0 hover:bg-gray-100"
                   >
                     {suggestion.name}
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
