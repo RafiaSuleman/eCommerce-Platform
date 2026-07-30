@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { simplifiedProduct } from "@/app/interface";
-
+import { Search, X } from "lucide-react";
 interface CategoryProductsProps {
   products: simplifiedProduct[];
 }
@@ -97,15 +97,31 @@ export default function CategoryProducts({
       {/* Search + Category Filter + Price Sorting */}
       <div className="mx-10 mt-6 flex flex-wrap justify-end gap-4">
         {/* Search Input */}
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) =>
-            setSearchQuery(e.target.value)
-          }
-          placeholder="Search products..."
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 outline-none focus:border-blue-500 sm:w-64"
-        />
+       <div className="relative w-full sm:w-64">
+  {/* Search Icon */}
+  <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+
+  {/* Search Input */}
+  <input
+    type="text"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder="Search products..."
+    className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-10 outline-none focus:border-blue-500"
+  />
+
+  {/* Clear Search Button */}
+  {searchQuery && (
+    <button
+      type="button"
+      onClick={() => setSearchQuery("")}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-700"
+      aria-label="Clear search"
+    >
+      <X className="h-5 w-5" />
+    </button>
+  )}
+</div>
 
         {/* Category Dropdown */}
         <select
