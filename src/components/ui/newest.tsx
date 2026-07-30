@@ -39,7 +39,7 @@ export default async function Newest() {
           </div>
 
           <Link
-            href="/all"
+            href="/allProducts"
             className="flex items-center gap-2 rounded-xl border px-5 py-3 font-medium transition hover:bg-gray-100"
           >
             View All
