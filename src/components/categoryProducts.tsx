@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { simplifiedProduct } from "@/app/interface";
@@ -10,17 +10,15 @@ interface CategoryProductsProps {
 }
 
 export default function CategoryProducts({ products }: CategoryProductsProps) {
+ console.log("TOTAL PRODUCTS FROM SANITY:", products.length);
+console.log("PRODUCTS:", products);
   const [sortOrder, setSortOrder] = useState("default");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [visibleCount, setVisibleCount] = useState(2);
   const [searchQuery, setSearchQuery] = useState("");
 
   // Category, sorting ya search change ho to
   // visible products wapas 2 ho jayen
-  useEffect(() => {
-    setVisibleCount(2);
-  }, [selectedCategory, sortOrder, searchQuery]);
-
+ 
   // Products se unique categories automatically nikalna
   const categories = useMemo(() => {
     return [
@@ -35,7 +33,6 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
     setSelectedCategory("all");
     setSortOrder("default");
     setSearchQuery("");
-    setVisibleCount(2);
   };
 
   // Search → Category Filter → Price Sorting
@@ -70,7 +67,7 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
   }, [products, searchQuery, selectedCategory, sortOrder]);
 
   // Sirf visible products show honge
-  const visibleProducts = filteredAndSortedProducts.slice(0, visibleCount);
+ 
 
   return (
     <>
@@ -149,7 +146,7 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
       {/* Products */}
       {filteredAndSortedProducts.length > 0 ? (
         <div className="mx-10 mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {visibleProducts.map((product) => (
+          {filteredAndSortedProducts.map((product) => (
             <div
               key={product._id}
               className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-3 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
@@ -208,20 +205,6 @@ export default function CategoryProducts({ products }: CategoryProductsProps) {
             className="mt-6 rounded-lg bg-gray-900 px-5 py-2.5 font-medium text-white transition hover:bg-gray-700"
           >
             Clear Filters
-          </button>
-        </div>
-      )}
-
-      {/* Load More */}
-      {visibleCount < filteredAndSortedProducts.length && (
-        <div className="mt-10 flex justify-center">
-          <button
-            onClick={() =>
-              setVisibleCount((previousCount) => previousCount + 4)
-            }
-            className="rounded-xl bg-gray-900 px-7 py-3 font-semibold text-white transition hover:bg-gray-700"
-          >
-            Load More
           </button>
         </div>
       )}

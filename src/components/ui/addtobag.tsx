@@ -28,7 +28,7 @@ export default function AddToBag({ currency, description, image, name, price }: 
         price: price,
         currency: currency,
         image: urlFor(image).url(), // Use urlFor to get the image URL
-        id: "4398754092"
+        id: name,
     };
 
     return (

@@ -18,7 +18,7 @@ async function getData(slug: string) {
       }`;
 
   const data = await client.fetch(query);
-
+console.log("PRODUCT DATA:", data);
   return data;
 }
 

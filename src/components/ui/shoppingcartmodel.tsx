@@ -12,44 +12,46 @@ import { useShoppingCart } from "use-shopping-cart";
 import React from "react"; // Import React for typing events
 
 export default function ShoppingCartModal() {
- const {
-  cartCount,
-  shouldDisplayCart,
-  handleCartClick,
-  cartDetails,
-  removeItem,
-  totalPrice,
-} = useShoppingCart();
+  const {
+    cartCount,
+    shouldDisplayCart,
+    handleCartClick,
+    cartDetails,
+    removeItem,
+    incrementItem,
+    decrementItem,
+    totalPrice,
+  } = useShoppingCart();
 
   // Properly type the event as a MouseEvent
   async function handleCheckoutClick(
-  event: React.MouseEvent<HTMLButtonElement>
-) {
-  event.preventDefault();
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) {
+    event.preventDefault();
 
-  try {
-    const cartItems = Object.values(cartDetails ?? {});
+    try {
+      const cartItems = Object.values(cartDetails ?? {});
 
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ cartItems }),
-    });
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cartItems }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      alert("Failed to start checkout.");
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Failed to start checkout.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong.");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong.");
   }
-}
 
   return (
     <Sheet open={shouldDisplayCart} onOpenChange={() => handleCartClick()}>
@@ -88,7 +90,27 @@ export default function ShoppingCartModal() {
                         </div>
 
                         <div className="flex flex-1 items-end justify-between text-sm">
-                          <p className="text-gray-500">QTY: {entry.quantity}</p>
+                          <div className="flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => decrementItem(entry.id)}
+                              className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-lg font-medium hover:bg-gray-100"
+                            >
+                              −
+                            </button>
+
+                            <span className="min-w-[30px] text-center text-gray-600">
+                              {entry.quantity}
+                            </span>
+
+                            <button
+                              type="button"
+                              onClick={() => incrementItem(entry.id)}
+                              className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-lg font-medium hover:bg-gray-100"
+                            >
+                              +
+                            </button>
+                          </div>
 
                           <div className="flex">
                             <button

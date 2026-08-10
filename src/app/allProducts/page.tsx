@@ -3,15 +3,14 @@ import { client } from "@/lib/sanity";
 import CategoryProducts from "@/components/categoryProducts";
 
 async function getData() {
-  const query = `*[_type == "product"] | order(_createdAt desc) {
-    _id,
-    name,
-    price,
-    "slug": slug.current,
-    "categoryName": category->name,
-    "imageUrl": images[0].asset->url
-  }`;
-
+ const query = `*[_type == "product"] | order(_createdAt desc) {
+  _id,
+  name,
+  price,
+  "slug": slug.current,
+  "categoryName": category->name,
+  "imageUrl": images[0].asset->url
+}`;
   const data = await client.fetch(query);
 
   return data;
@@ -19,6 +18,7 @@ async function getData() {
 
 export default async function AllProductsPage() {
   const data: simplifiedProduct[] = await getData();
+  console.log("ALL PRODUCTS:", data);
 
   return (
     <main className="min-h-screen bg-white">

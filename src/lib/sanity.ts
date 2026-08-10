@@ -14,7 +14,8 @@ export const client = createClient({
   projectId: 'dqzugms3',
   dataset: 'production',
   apiVersion: '2024-07-09',
-  useCdn: true,
+    token: process.env.SANITY_API_TOKEN,
+ useCdn: false,
 });
 
 const builder = imageUrlBuilder(client);
