@@ -10,16 +10,11 @@ interface CategoryProductsProps {
 }
 
 export default function CategoryProducts({ products }: CategoryProductsProps) {
- console.log("TOTAL PRODUCTS FROM SANITY:", products.length);
-console.log("PRODUCTS:", products);
+
   const [sortOrder, setSortOrder] = useState("default");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Category, sorting ya search change ho to
-  // visible products wapas 2 ho jayen
- 
-  // Products se unique categories automatically nikalna
   const categories = useMemo(() => {
     return [
       ...new Set(

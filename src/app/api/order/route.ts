@@ -119,3 +119,34 @@ export async function POST(request: Request) {
     );
   }
 }
+export async function PATCH(request: Request) {
+  try {
+    const { orderId, orderStatus } = await request.json();
+
+    if (!orderId || !orderStatus) {
+      return NextResponse.json(
+        { message: "Order ID and status are required" },
+        { status: 400 }
+      );
+    }
+
+    const updatedOrder = await client
+      .patch(orderId)
+      .set({
+        orderStatus,
+      })
+      .commit();
+
+    return NextResponse.json({
+      message: "Order status updated successfully",
+      order: updatedOrder,
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+
+    return NextResponse.json(
+      { message: "Failed to update order status" },
+      { status: 500 }
+    );
+  }
+}

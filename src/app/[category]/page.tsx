@@ -17,10 +17,6 @@ async function getData(category: string) {
     category,
   });
 
-  console.log("SANITY CATEGORY:", category);
-  console.log("SANITY PRODUCTS:", data);
-  console.log("SANITY COUNT:", data.length);
-
   return data;
 }
 
@@ -31,15 +27,8 @@ export default async function CategoryPage({
 }) {
 // data shape clearly define hoti hai aur runtime errors kam hote hain-> wy use simplifiedProduct[]
   const data: simplifiedProduct[] = await getData(params.category);
-console.log("CATEGORY:", params.category);
-console.log(
-  "PRODUCT NAMES:",
-  data.map((product) => product.name)
-);
-console.log("PRODUCT COUNT:", data.length);
   // If you need to use 'data', render it in JSX or process it.
-  return (
-    
+  return (   
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="flex justify-between items-center">
@@ -48,7 +37,6 @@ console.log("PRODUCT COUNT:", data.length);
           </h2>
         </div>
       </div>
-
    <CategoryProducts products={data} />
     </div>
   );
