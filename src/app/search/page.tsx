@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from "@/components/ui/productCard";
 interface Product {
   _id: string;
